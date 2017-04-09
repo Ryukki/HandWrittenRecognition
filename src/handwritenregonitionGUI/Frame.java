@@ -11,11 +11,15 @@ package handwritenregonitionGUI;
 public class Frame {
     
     private JFrameMainWidnow mainWindow;
-   
+    private  MousePaint mouse;
     
     public Frame(){
         mainWindow= new JFrameMainWidnow();
-        mainWindow.setVisible(true);
+        mouse=new MousePaint();
+        mouse.setBackground(new java.awt.Color(153, 0, 51));
+        mouse.setBorder(javax.swing.BorderFactory.createCompoundBorder());
+        mainWindow.add(mouse);
+      
         
     }
     

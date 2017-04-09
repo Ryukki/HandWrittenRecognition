@@ -16,23 +16,17 @@ import javax.swing.border.EmptyBorder;
  * @author Marcel
  */
 public class JFrameMainWidnow extends javax.swing.JFrame {
-     private MousePaint mouse;
+    
      
     /**
      * Creates new form JFrameMainWidnow
      */
     public JFrameMainWidnow() {
         initComponents();
-       mouse=new MousePaint();
-      //mouse.setLayout(new GridLayout());
-    
-    
-      //mouse.setLayout(new BorderLayout());
-      //mouse.setBorder(new EmptyBorder(10, 10, 10, 10));
-  
-  
-
-      this.add(mouse);
+       
+      setVisible(true);
+     
+     
             
     }
 

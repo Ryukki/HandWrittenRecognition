@@ -26,15 +26,11 @@ import javax.swing.border.TitledBorder;
 public class MousePaint extends JPanel implements MouseMotionListener
     {
      private int x1, y1, x2, y2;
-     private Border redBorder;
      public MousePaint()
          {
          
          addMouseMotionListener(this);
          setBounds(50,50,400,250);
-         redBorder=BorderFactory.createLineBorder(Color.red,3,true);
-         setBackground(Color.red);
-         setBorder(redBorder);
          setVisible(true);
      }
      public static void main(String[] argv)
