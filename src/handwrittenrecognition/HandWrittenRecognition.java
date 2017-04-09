@@ -4,7 +4,8 @@
  * and open the template in the editor.
  */
 package handwrittenrecognition;
-
+import handwritenregonitionGUI.JFrameMainWidnow; 
+import handwritenregonitionGUI.MousePaint;
 /**
  *
  * @author Jakub
@@ -16,6 +17,11 @@ public class HandWrittenRecognition {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+       
+     
     }
     
 }
+
+
+
