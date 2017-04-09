@@ -5,7 +5,6 @@
  */
 package handwrittenrecognition;
 
-import javax.swing.JFrame;
 
 /**
  *
@@ -18,11 +17,9 @@ public class HandWrittenRecognition {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                GUI gui = new GUI();
-                gui.createAndShowGUI(); 
-            }
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            GUI gui = new GUI();
+            gui.createAndShowGUI();
         });
     }
     

@@ -5,14 +5,15 @@
  */
 package handwrittenrecognition;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JTabbedPane;
 
 /**
  *
@@ -22,11 +23,14 @@ public class GUI extends JPanel
                         implements ActionListener{
     protected JButton bTrain, bClearInputField, bRecognize, bAdd, bSave, bClose;
     protected JRadioButton rbPatterns, rbRecognizing; 
+    protected JPanel pane1, pane2, pane3;
+    //JPanel panel;
     JFrame frame;
+    private JFrameMainWindow mainWindow;
+    private  MousePaint mouse;
     
     public GUI(){
         //super(new BorderLayout());
-        
         bTrain = new JButton("Train");
         bTrain.setActionCommand("Train");
         bTrain.setEnabled(false);
@@ -72,12 +76,16 @@ public class GUI extends JPanel
         rbGroup.add(rbPatterns);
         rbGroup.add(rbRecognizing);                
                 
-        add(rbPatterns);
-        add(rbRecognizing);
+        pane1 = new JPanel();
+        pane1.add(rbPatterns);
+        pane1.add(rbRecognizing);
+        add(pane1);
         
-        add(bTrain);
-        add(bRecognize);
-        add(bClearInputField);
+        pane2 = new JPanel();
+        pane2.add(bTrain);
+        pane2.add(bRecognize);
+        pane2.add(bClearInputField);
+        add(pane2);
         add(bAdd);
         add(bSave);
         add(bClose);
@@ -101,15 +109,22 @@ public class GUI extends JPanel
                 bSave.setEnabled(false);
                 break;
             case "Close":
-                if (frame.isDisplayable()) {
-                    frame.dispose();
-                }
+                //if (frame.isDisplayable()) {
+                    //frame.dispose();
+                //}
+                break;
+            default:
                 break;
         }
     }
     
     public void createAndShowGUI() {
-
+        mainWindow= new JFrameMainWindow();
+        mouse=new MousePaint();
+        mouse.setBackground(new java.awt.Color(153, 0, 51));
+        mouse.setBorder(javax.swing.BorderFactory.createCompoundBorder());
+        mainWindow.add(mouse);
+        
         //Create and set up the window.
         frame = new JFrame("Hand written characters recognition");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -118,10 +133,16 @@ public class GUI extends JPanel
         GUI newContentPane = new GUI();
         newContentPane.setOpaque(true); //content panes must be opaque
         frame.setContentPane(newContentPane);
-
+        
+        //frame.add(mouse, BorderLayout.CENTER);
+        //frame.getContentPane().add(newContentPane, BorderLayout.NORTH);
+        
         //Display the window.
         //frame.pack();
-        frame.setSize(450, 400);
+        frame.setResizable(false);
+        frame.setSize(300, 400);
         frame.setVisible(true);
+        
+        
     }
 }
