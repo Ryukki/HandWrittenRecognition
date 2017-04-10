@@ -6,6 +6,8 @@
 package handwrittenrecognition;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ButtonGroup;
@@ -13,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 
 /**
@@ -23,7 +26,8 @@ public class GUI extends JPanel
                         implements ActionListener{
     protected JButton bTrain, bClearInputField, bRecognize, bAdd, bSave, bClose;
     protected JRadioButton rbPatterns, rbRecognizing; 
-    protected JPanel pane1, pane2, pane3;
+    protected JPanel pane1, pane2, pane3,rightPanel, leftPanel;
+    private JSplitPane splitpane1;
     //JPanel panel;
     JFrame frame;
     private JFrameMainWindow mainWindow;
@@ -85,10 +89,13 @@ public class GUI extends JPanel
         pane2.add(bTrain);
         pane2.add(bRecognize);
         pane2.add(bClearInputField);
+        
         add(pane2);
         add(bAdd);
         add(bSave);
         add(bClose);
+        
+
     }
 
     @Override
@@ -119,28 +126,47 @@ public class GUI extends JPanel
     }
     
     public void createAndShowGUI() {
-        mainWindow= new JFrameMainWindow();
+//        mainWindow= new JFrameMainWindow();
         mouse=new MousePaint();
         mouse.setBackground(new java.awt.Color(153, 0, 51));
         mouse.setBorder(javax.swing.BorderFactory.createCompoundBorder());
-        mainWindow.add(mouse);
+        mouse.setLocation(0, 60); // nie dziala
+        mouse.setPreferredSize(new Dimension(2,100)); // czemu x nie
+        
+        leftPanel=new JPanel();
+        leftPanel.setBackground(Color.white);
+        leftPanel.setLayout(new BorderLayout());
+        leftPanel.add(mouse, BorderLayout.NORTH);
+        
+        rightPanel=new JPanel();
+        rightPanel.add(pane1);
+        rightPanel.add(pane2);
+       // mainWindow.add(mouse);
+       splitpane1=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,leftPanel,rightPanel);
+       splitpane1.resetToPreferredSizes();
+       splitpane1.setDividerLocation(200 + splitpane1.getInsets().left) ;
+       splitpane1.setEnabled(false);
+       splitpane1.setVisible(true);
+       
+       
         
         //Create and set up the window.
         frame = new JFrame("Hand written characters recognition");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        //Create and set up the content pane.
-        GUI newContentPane = new GUI();
-        newContentPane.setOpaque(true); //content panes must be opaque
-        frame.setContentPane(newContentPane);
         
+        frame.add(splitpane1);
+        //Create and set up the content pane.
+//        GUI newContentPane = new GUI();
+//        newContentPane.setOpaque(true); //content panes must be opaque
+//        frame.setContentPane(newContentPane);
+        frame.add(splitpane1);
         //frame.add(mouse, BorderLayout.CENTER);
         //frame.getContentPane().add(newContentPane, BorderLayout.NORTH);
         
         //Display the window.
         //frame.pack();
         frame.setResizable(false);
-        frame.setSize(300, 400);
+        frame.setSize(600, 500);
         frame.setVisible(true);
         
         

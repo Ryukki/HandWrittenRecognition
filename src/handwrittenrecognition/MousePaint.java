@@ -21,7 +21,7 @@ public class MousePaint extends JPanel implements MouseMotionListener {
 
     public MousePaint() {
         addMouseMotionListener(this);
-        setBounds(0, 0, 300, 300);
+        setBounds(0, 0, 140, 60);
         setVisible(true);
     }
 
