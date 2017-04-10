@@ -8,6 +8,7 @@ package handwrittenrecognition;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ButtonGroup;
@@ -86,14 +87,12 @@ public class GUI extends JPanel
         add(pane1);
         
         pane2 = new JPanel();
+        pane2.setLayout(new GridLayout(2,5));
         pane2.add(bTrain);
         pane2.add(bRecognize);
         pane2.add(bClearInputField);
         
-        add(pane2);
-        add(bAdd);
-        add(bSave);
-        add(bClose);
+       
         
 
     }
@@ -131,7 +130,7 @@ public class GUI extends JPanel
         mouse.setBackground(new java.awt.Color(153, 0, 51));
         mouse.setBorder(javax.swing.BorderFactory.createCompoundBorder());
         mouse.setLocation(0, 60); // nie dziala
-        mouse.setPreferredSize(new Dimension(2,100)); // czemu x nie
+        mouse.setPreferredSize(new Dimension(2,100)); // czemu x nie dziala
         
         leftPanel=new JPanel();
         leftPanel.setBackground(Color.white);
