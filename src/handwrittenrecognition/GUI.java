@@ -92,7 +92,10 @@ public class GUI extends JPanel
         pane2.add(bRecognize);
         pane2.add(bClearInputField);
         
-       
+      
+        pane2.add(bAdd);
+        pane2.add(bSave);
+        pane2.add(bClose);
         
 
     }
