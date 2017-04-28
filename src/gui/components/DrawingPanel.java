@@ -14,8 +14,8 @@ import java.util.Map;
 public class DrawingPanel extends CustomPanel implements MouseMotionListener, MouseListener {
 
     private ArrayList<Section> toDraw;
-    private final int WIDTH = 40;
-    private final int HEIGHT = 40;
+    private final int WIDTH = 30;
+    private final int HEIGHT = 30;
 
     public DrawingPanel(int w, int h, int count) {
         super(w, h, count);
@@ -63,6 +63,59 @@ public class DrawingPanel extends CustomPanel implements MouseMotionListener, Mo
 
     }
 
+    @Override
+    public ArrayList<Integer> getPixels() {
+
+        int centerX = 0;
+        int centerY = 0;
+        int circleRadius = (this.WIDTH / 2);
+        ArrayList<Integer> pixels = new ArrayList<>();
+        for (Section s : sections) {
+            s.setActive(false); //reset matrix
+            for (Section t : toDraw) {
+
+                if (t.isActive() == true) {
+
+                    centerX = t.getX() + circleRadius;
+                    centerY = t.getY() + circleRadius;
+                    double lenght = Math.sqrt(Math.pow(centerX - s.getX(), 2) + Math.pow(centerY - s.getY(), 2));
+                    if (circleRadius >= lenght ) {
+
+                        s.setActive(true);
+
+                    } else if (circleRadius < lenght) {
+
+                    }
+
+                }
+
+            }
+
+        }
+        for (Section s : sections) {
+            if (s.isActive() == true) {
+                pixels.add(1);
+            } else {
+                pixels.add(0);
+            }
+        }
+        int counter = 0;
+        for (Integer p : pixels) {
+            if (p == 1) {
+                System.out.print(p + " ");
+            } else {
+                System.out.print(" ");
+            }
+            ++counter;
+            if (counter == count) {
+                System.out.print("\n");
+                counter = 0;
+            }
+        }
+
+        return pixels;
+    }
+
     private void drawCircle(Graphics g) {
 
         for (Section s : toDraw) {
@@ -82,6 +135,7 @@ public class DrawingPanel extends CustomPanel implements MouseMotionListener, Mo
                 if (e.getX() > s.getX() && e.getX() < s.getX() + this.WIDTH && e.getY() > s.getY() && e.getY() < s.getY() + this.HEIGHT) {
                     s.setActive(false);
                 }
+
             }
         }
 
