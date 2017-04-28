@@ -10,7 +10,11 @@ import neural.TrainingSet;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import utils.ImageManipulation;
 
 public class MainGui extends JFrame {
 
@@ -39,6 +43,12 @@ public class MainGui extends JFrame {
 
     public MainGui() {
         super("Natural Network");
+        try {
+            String path = "E:\\Desktop\\Projekty\\BIAI\\English\\Hnd\\Img\\Sample001\\img001-001.png";
+            new ImageManipulation().resize(path,"E:\\Desktop\\temp.png");
+        } catch (IOException ex) {
+            System.out.println("Złe ścieżki!!!111oneoneone");
+        }
 
         networkTrainer = new Train();
 

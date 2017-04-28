@@ -11,7 +11,7 @@ public class CustomPanel extends JPanel {
     protected ArrayList<Section> sections;
     private int width;
     private int height;
-    private int count;
+    protected int count;
     private boolean generate=false;
     public CustomPanel(int w, int h, int count) {
         super();
