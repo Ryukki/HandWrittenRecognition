@@ -4,11 +4,14 @@ import neural.TrainingSet;
 
 import java.io.*;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ReadWriteFile {
 
@@ -18,39 +21,37 @@ public class ReadWriteFile {
         for (int i = 0; i < 26; i++) {
             char letterValue = (char) (i + 65);
             String letter = String.valueOf(letterValue);
-            for (ArrayList<Integer> list : readFromFile("/resources/" + letter + ".txt")) {
-                trainingSets.add(new TrainingSet(list, GoodOutputs.getInstance().getGoodOutput(letter)));
+            try {
+                for (ArrayList<Integer> list : readFromFile("src\\resources\\" + letter + ".txt")) {
+                    trainingSets.add(new TrainingSet(list, GoodOutputs.getInstance().getGoodOutput(letter)));
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(ReadWriteFile.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
         return trainingSets;
     }
 
-    private static ArrayList<ArrayList<Integer>> readFromFile(String filename) {
+    private static ArrayList<ArrayList<Integer>> readFromFile(String filename) throws FileNotFoundException, IOException {
         ArrayList<ArrayList<Integer>> inputs = new ArrayList<>();
-
-        try {
-            InputStream in = ReadWriteFile.class.getResourceAsStream(filename);
-            URL url = ReadWriteFile.class.getResource(filename);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-            String line;
-            while ((line = reader.readLine()) != null) {
+        
+        try (InputStream in = new FileInputStream(new File(filename));
+            Reader reader = new InputStreamReader(in, Charset.defaultCharset());
+            Reader buffer = new BufferedReader(reader)) {
+                int r = 0;
+                do{
                 ArrayList<Integer> input = new ArrayList<>();
-                for (int i = 0; i < line.length(); i++) {
-                    int value = 0;
-                    try {
-                        value = Integer.parseInt(String.valueOf(line.charAt(i)));
-                    } catch (Exception e) {
+                for(int i = 0; i < 30000; i++){
+                    if ((r = reader.read()) != -1) {
+                        r-=48;
+                        input.add(r);
                     }
-                    input.add(value);
-                }
-                inputs.add(input);
-            }
-            reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+                }   
+                if(input.size()==30000)
+                    inputs.add(input);
+                }while(r!=-1);
         }
-
         return inputs;
     }
 

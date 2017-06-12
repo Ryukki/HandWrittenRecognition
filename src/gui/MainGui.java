@@ -43,13 +43,7 @@ public class MainGui extends JFrame {
 
     public MainGui() {
         super("Natural Network");
-        try {
-            String path = "E:\\Desktop\\Projekty\\BIAI\\English\\Hnd\\Img\\Sample001\\img001-001.png";
-            new ImageManipulation().resize(path,"E:\\Desktop\\temp.png");
-        } catch (IOException ex) {
-            System.out.println("Złe ścieżki!!!111oneoneone");
-        }
-
+        //new ImageManipulation().process();
         networkTrainer = new Train();
 
         setMainPanel();
