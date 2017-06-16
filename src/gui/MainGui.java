@@ -10,15 +10,11 @@ import neural.TrainingSet;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import utils.ImageManipulation;
 
 public class MainGui extends JFrame {
 
-    private final int RESOLUTION = 20;
+    private final int RESOLUTION = 150;
 
     private Train networkTrainer;
 
@@ -43,7 +39,7 @@ public class MainGui extends JFrame {
 
     public MainGui() {
         super("Natural Network");
-        //new ImageManipulation().process();
+
         networkTrainer = new Train();
 
         setMainPanel();
@@ -56,7 +52,7 @@ public class MainGui extends JFrame {
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
-        setSize(new Dimension(1260, 500));
+        setSize(new Dimension(1800, 500));
         setLocationRelativeTo(null);
         setResizable(false);
     }
@@ -64,21 +60,22 @@ public class MainGui extends JFrame {
     private void setMainPanel() {
         mainPanel = new JPanel();
         mainPanel.setBackground(Color.LIGHT_GRAY);
+        mainPanel.setLayout(new GridLayout(1,3));
         setContentPane(mainPanel);
     }
 
     private void setLeftSide() {
         JPanel panel = new JPanel();
         panel.setBackground(Color.LIGHT_GRAY);
-        panel.setPreferredSize(new Dimension(410, 440));
-
+        panel.setPreferredSize(new Dimension(800, 440));
+        
         drawLetterButton = new JButton("Draw:");
         drawLetterCombo = new JComboBox<>(new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Z", "Y"});
 
-        drawingPanel = new DrawingPanel(400, 400, RESOLUTION);
+        drawingPanel = new DrawingPanel(600, 450, RESOLUTION);
 
-        panel.add(drawLetterButton);
-        panel.add(drawLetterCombo);
+       // panel.add(drawLetterButton);
+       // panel.add(drawLetterCombo);
         panel.add(drawingPanel);
 
         mainPanel.add(panel);
@@ -87,15 +84,16 @@ public class MainGui extends JFrame {
     private void setCenterArea() {
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new GridBagLayout());
-        centerPanel.setPreferredSize(new Dimension(200, 400));
+       // centerPanel.setPreferredSize(new Dimension(100, 400));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.anchor = GridBagConstraints.CENTER;
-
+       
         trainNetworkButton = new JButton("Train X times:");
         trainingSetsAmount = new JFormattedTextField("5000");
         trainingSetsAmount.setMaximumSize(new Dimension(100, 30));
         trainingSetsAmount.setPreferredSize(new Dimension(100, 30));
+      //  centerPanel.setSize(new Dimension(100,40));
         centerPanel.add(trainNetworkButton, gbc);
         centerPanel.add(trainingSetsAmount, gbc);
 
@@ -133,8 +131,8 @@ public class MainGui extends JFrame {
     private void setRightSide() {
         JPanel panel = new JPanel();
         panel.setBackground(Color.LIGHT_GRAY);
-        panel.setBorder(BorderFactory.createEmptyBorder(30, 0, 0, 0));
-        resultPanel = new CustomPanel(400, 400, RESOLUTION);
+       // panel.setBorder(BorderFactory.createEmptyBorder(30, 0, 0, 0));
+        resultPanel = new CustomPanel(600, 450, RESOLUTION);
         panel.add(resultPanel);
         mainPanel.add(panel);
     }
@@ -147,7 +145,7 @@ public class MainGui extends JFrame {
         outputTextArea.setPreferredSize(new Dimension(200, 430));
         outputPanel.add(outputTextArea);
 
-        mainPanel.add(outputPanel);
+       // mainPanel.add(outputPanel);
     }
 
     private void setOnClicks() {
@@ -177,6 +175,7 @@ public class MainGui extends JFrame {
         });
 
         helpButton.addActionListener(e -> {
+            drawingPanel.getPixels();
             StringBuilder sb = new StringBuilder();
             sb.append("Train network X times after you start the program. Recommended 5000 times\n");
             sb.append("\n");

@@ -12,7 +12,8 @@ public class CustomPanel extends JPanel {
     private int width;
     private int height;
     protected int count;
-    private boolean generate=false;
+    private boolean generate = false;
+
     public CustomPanel(int w, int h, int count) {
         super();
         this.width = w;
@@ -26,22 +27,22 @@ public class CustomPanel extends JPanel {
     }
 
     private void generateSections() {
-        
 
-        for (int i = 0; i < count; i++) {
-            for (int j = 0; j < count; j++) {
-                sections.add(new Section(i * (width / count), j * (height / count), width / count, height / count));
+        for (int i = 0; i < width/3; i++) {
+            for (int j = 0; j < height/3; j++) {
+                sections.add(new Section(i * (width / 200), j * (height / 150), width / 200, height / 150));
+                
             }
         }
-          
+
         repaint();
+       
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        
         generateSections(g);
         drawSections(g);
 
@@ -49,14 +50,13 @@ public class CustomPanel extends JPanel {
 
     protected void generateSections(Graphics g) {
         g.setColor(Color.LIGHT_GRAY);
-        
+
         for (Section s : sections) {
             g.drawLine(0, s.getY(), width, s.getY());
             g.drawLine(s.getX(), 0, s.getX(), height);
-           
+
         }
-       
-        
+
     }
 
     protected void drawSections(Graphics g) {
@@ -71,12 +71,24 @@ public class CustomPanel extends JPanel {
     }
 
     public ArrayList<Integer> getPixels() {
+        int count = 0;
         ArrayList<Integer> pixels = new ArrayList<>();
         for (Section s : sections) {
-            if (s.isActive())
+
+            if (s.isActive()) {
                 pixels.add(1);
-            else
+                 System.out.print("1 ");
+            } else {
                 pixels.add(0);
+                System.out.print("0 ");
+            }
+            ++count;
+            if (count == 20) {
+                count = 0;
+                System.out.print("\n");
+
+            }
+
         }
 
         return pixels;
@@ -92,10 +104,11 @@ public class CustomPanel extends JPanel {
 
     public void drawLetter(ArrayList<Integer> pixels) {
         for (int i = 0; i < pixels.size(); i++) {
-            if (pixels.get(i) == 1)
+            if (pixels.get(i) == 1) {
                 sections.get(i).setActive(true);
-            else
+            } else {
                 sections.get(i).setActive(false);
+            }
         }
 
         repaint();
@@ -104,5 +117,5 @@ public class CustomPanel extends JPanel {
     public ArrayList<Section> getSections() {
         return sections;
     }
-   
+
 }
