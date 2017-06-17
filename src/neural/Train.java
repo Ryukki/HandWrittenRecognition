@@ -17,8 +17,8 @@ public class Train {
         this.trainingSets = ReadWriteFile.readTrainingSets();
     }
 
-    public void train(long count) {
-        for (long i = 0; i < count; i++) {
+    public void train(){//long count) {
+        for (long i = 0; i < 10000; i++) {
             int index = ((int) (Math.random() * trainingSets.size()));
             TrainingSet set = trainingSets.get(index);
             network.setInputs(set.getInputs());

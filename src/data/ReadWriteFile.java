@@ -57,12 +57,12 @@ public class ReadWriteFile {
 
     public static void saveToFile(ArrayList<Integer> input, String filename) {
         try {
-            File file = new File("resources/" + filename + ".txt");
+            String path = "src\\resources\\" + filename + ".txt";
+            File file = new File(path);
             PrintWriter pw = new PrintWriter(new FileOutputStream(file, true));
             for (Integer i : input) {
                 pw.write(Integer.toString(i));
             }
-            pw.write("\n");
             pw.close();
         } catch (Exception e) {
             e.printStackTrace();

@@ -95,7 +95,7 @@ public class MainGui extends JFrame {
         trainingSetsAmount.setPreferredSize(new Dimension(100, 30));
       //  centerPanel.setSize(new Dimension(100,40));
         centerPanel.add(trainNetworkButton, gbc);
-        centerPanel.add(trainingSetsAmount, gbc);
+        //centerPanel.add(trainingSetsAmount, gbc);
 
         centerPanel.add(Box.createVerticalStrut(50));
 
@@ -117,7 +117,7 @@ public class MainGui extends JFrame {
 
         centerPanel.add(new JLabel("Train as:", SwingConstants.CENTER), gbc);
 
-        trainAsCombo = new JComboBox<>(new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Z", "Y"});
+        trainAsCombo = new JComboBox<>(new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"});
         trainAsCombo.setAlignmentX(Component.CENTER_ALIGNMENT);
         trainAsCombo.setMaximumSize(new Dimension((int) trainAsCombo.getPreferredSize().getWidth(), 30));
         centerPanel.add(trainAsCombo, gbc);
@@ -131,10 +131,12 @@ public class MainGui extends JFrame {
     private void setRightSide() {
         JPanel panel = new JPanel();
         panel.setBackground(Color.LIGHT_GRAY);
+        
+        panel.add(new JTextArea());
        // panel.setBorder(BorderFactory.createEmptyBorder(30, 0, 0, 0));
-        resultPanel = new CustomPanel(600, 450, RESOLUTION);
-        panel.add(resultPanel);
-        mainPanel.add(panel);
+        //resultPanel = new CustomPanel(600, 450, RESOLUTION);
+        //panel.add(resultPanel);
+        //mainPanel.add(panel);
     }
 
     private void setOutputPanel() {
@@ -145,7 +147,7 @@ public class MainGui extends JFrame {
         outputTextArea.setPreferredSize(new Dimension(200, 430));
         outputPanel.add(outputTextArea);
 
-       // mainPanel.add(outputPanel);
+        mainPanel.add(outputPanel);
     }
 
     private void setOnClicks() {
@@ -195,7 +197,7 @@ public class MainGui extends JFrame {
                 JOptionPane.showMessageDialog(this, "Wrong input", "ERROR", JOptionPane.PLAIN_MESSAGE);
             }
 
-            networkTrainer.train(number);
+            networkTrainer.train();//number);
         });
 
         drawLetterButton.addActionListener(e -> {
