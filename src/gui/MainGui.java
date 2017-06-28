@@ -3,7 +3,6 @@ package gui;
 import data.GoodOutputs;
 import data.GoodPixels;
 import data.ReadWriteFile;
-import gui.components.CustomPanel;
 import gui.components.DrawingPanel;
 import neural.Train;
 import neural.TrainingSet;
@@ -20,18 +19,16 @@ public class MainGui extends JFrame {
 
     private JPanel mainPanel;
     private DrawingPanel drawingPanel;
-    private CustomPanel resultPanel;
 
     private JButton clearButton;
     private JButton trainButton;
     private JButton transformButton;
     private JButton helpButton;
     private JButton trainNetworkButton;
-    private JButton drawLetterButton;
     private JTextField trainingSetsAmount;
     private JComboBox<String> drawLetterCombo;
     private JComboBox<String> trainAsCombo;
-    private JTextArea outputTextArea;
+    private JTextField outputTextField;
 
     public static void main(String[] args) {
         new MainGui();
@@ -45,14 +42,14 @@ public class MainGui extends JFrame {
         setMainPanel();
         setLeftSide();
         setCenterArea();
-        setRightSide();
-        setOutputPanel();
+        //setRightSide();
+        //setOutputPanel();
 
         setOnClicks();
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
-        setSize(new Dimension(1800, 500));
+        setSize(new Dimension(1000, 500));
         setLocationRelativeTo(null);
         setResizable(false);
     }
@@ -69,13 +66,9 @@ public class MainGui extends JFrame {
         panel.setBackground(Color.LIGHT_GRAY);
         panel.setPreferredSize(new Dimension(800, 440));
         
-        drawLetterButton = new JButton("Draw:");
         drawLetterCombo = new JComboBox<>(new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Z", "Y"});
 
         drawingPanel = new DrawingPanel(600, 450, RESOLUTION);
-
-       // panel.add(drawLetterButton);
-       // panel.add(drawLetterCombo);
         panel.add(drawingPanel);
 
         mainPanel.add(panel);
@@ -106,7 +99,6 @@ public class MainGui extends JFrame {
 
         transformButton = new JButton(">>");
         centerPanel.add(transformButton, gbc);
-
         centerPanel.add(Box.createVerticalStrut(50));
 
         clearButton = new JButton("Clear");
@@ -124,6 +116,12 @@ public class MainGui extends JFrame {
 
         trainButton = new JButton("Train");
         centerPanel.add(trainButton, gbc);
+        
+        
+        centerPanel.add(Box.createVerticalStrut(50));
+        outputTextField = new JTextField();
+        outputTextField.setPreferredSize(new Dimension(200, 20));
+        centerPanel.add(outputTextField);
 
         mainPanel.add(centerPanel);
     }
@@ -141,11 +139,11 @@ public class MainGui extends JFrame {
 
     private void setOutputPanel() {
         JPanel outputPanel = new JPanel();
-        outputPanel.setPreferredSize(new Dimension(200, 430));
+        outputPanel.setPreferredSize(new Dimension(200, 20));
 
-        outputTextArea = new JTextArea();
-        outputTextArea.setPreferredSize(new Dimension(200, 430));
-        outputPanel.add(outputTextArea);
+        outputTextField = new JTextField();
+        outputTextField.setPreferredSize(new Dimension(200, 20));
+        outputPanel.add(outputTextField);
 
         mainPanel.add(outputPanel);
     }
@@ -170,16 +168,16 @@ public class MainGui extends JFrame {
                 }
             }
 
-            updateTextArea();
+            //updateTextArea();
 
             trainAsCombo.setSelectedIndex(index);
-            resultPanel.drawLetter(GoodPixels.getInstance().getGoodPixels(index));
+            outputTextField.setText("Written letter is: " + trainAsCombo.getItemAt(index));
         });
 
         helpButton.addActionListener(e -> {
             drawingPanel.getPixels();
             StringBuilder sb = new StringBuilder();
-            sb.append("Train network X times after you start the program. Recommended 5000 times\n");
+            sb.append("Train network after you start the program.\n");
             sb.append("\n");
             sb.append("Use left/right mouse button to draw/erase\n");
             sb.append("\n");
@@ -190,20 +188,7 @@ public class MainGui extends JFrame {
         });
 
         trainNetworkButton.addActionListener(e -> {
-            int number = 0;
-            try {
-                number = Integer.parseInt(trainingSetsAmount.getText());
-            } catch (Exception x) {
-                JOptionPane.showMessageDialog(this, "Wrong input", "ERROR", JOptionPane.PLAIN_MESSAGE);
-            }
-
             networkTrainer.train();//number);
-        });
-
-        drawLetterButton.addActionListener(e -> {
-            String letter = (String) drawLetterCombo.getSelectedItem();
-            ArrayList<Integer> goodPixels = GoodPixels.getInstance().getGoodPixels(letter);
-            drawingPanel.drawLetter(goodPixels);
         });
 
         drawLetterCombo.addActionListener(e -> {
@@ -235,7 +220,7 @@ public class MainGui extends JFrame {
             sb.append("\t " + value);
             sb.append("\n");
         }
-        outputTextArea.setText(sb.toString());
+        outputTextField.setText(sb.toString());
     }
 
 }
