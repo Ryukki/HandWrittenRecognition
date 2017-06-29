@@ -1,7 +1,6 @@
 package gui;
 
 import data.GoodOutputs;
-import data.GoodPixels;
 import data.ReadWriteFile;
 import gui.components.DrawingPanel;
 import neural.Train;
@@ -26,7 +25,6 @@ public class MainGui extends JFrame {
     private JButton helpButton;
     private JButton trainNetworkButton;
     private JTextField trainingSetsAmount;
-    private JComboBox<String> drawLetterCombo;
     private JComboBox<String> trainAsCombo;
     private JTextField outputTextField;
 
@@ -42,8 +40,6 @@ public class MainGui extends JFrame {
         setMainPanel();
         setLeftSide();
         setCenterArea();
-        //setRightSide();
-        //setOutputPanel();
 
         setOnClicks();
 
@@ -66,8 +62,6 @@ public class MainGui extends JFrame {
         panel.setBackground(Color.LIGHT_GRAY);
         panel.setPreferredSize(new Dimension(800, 440));
         
-        drawLetterCombo = new JComboBox<>(new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Z", "Y"});
-
         drawingPanel = new DrawingPanel(600, 450, RESOLUTION);
         panel.add(drawingPanel);
 
@@ -126,28 +120,6 @@ public class MainGui extends JFrame {
         mainPanel.add(centerPanel);
     }
 
-    private void setRightSide() {
-        JPanel panel = new JPanel();
-        panel.setBackground(Color.LIGHT_GRAY);
-        
-        panel.add(new JTextArea());
-       // panel.setBorder(BorderFactory.createEmptyBorder(30, 0, 0, 0));
-        //resultPanel = new CustomPanel(600, 450, RESOLUTION);
-        //panel.add(resultPanel);
-        //mainPanel.add(panel);
-    }
-
-    private void setOutputPanel() {
-        JPanel outputPanel = new JPanel();
-        outputPanel.setPreferredSize(new Dimension(200, 20));
-
-        outputTextField = new JTextField();
-        outputTextField.setPreferredSize(new Dimension(200, 20));
-        outputPanel.add(outputTextField);
-
-        mainPanel.add(outputPanel);
-    }
-
     private void setOnClicks() {
         clearButton.addActionListener(e -> drawingPanel.clear());
 
@@ -190,13 +162,6 @@ public class MainGui extends JFrame {
         trainNetworkButton.addActionListener(e -> {
             networkTrainer.train();//number);
         });
-
-        drawLetterCombo.addActionListener(e -> {
-            String letter = (String) drawLetterCombo.getSelectedItem();
-            ArrayList<Integer> goodPixels = GoodPixels.getInstance().getGoodPixels(letter);
-            drawingPanel.drawLetter(goodPixels);
-        });
-
     }
 
     private void updateTextArea() {
