@@ -26,14 +26,19 @@ public class ImageToFile {
         for (int i=0; i<26;i++){
             for(int j=0;j<55;j++){
             String inPath = "E:\\Desktop\\CharDB\\";
-            String outPath = "E:\\Desktop\\CharDB\\res\\";
+            String outPathLearn = "E:\\Desktop\\CharDB\\res\\";
+            String outPathTest = "E:\\Desktop\\CharDB\\res\\";
             Integer file = 1+j;
             char charNumber = (char)(65 + i);
             inPath += charNumber +"\\"+ charNumber + file + ".png";
             
-            outPath += charNumber + ".txt";
+            outPathTest += charNumber + "test.txt";
+            outPathLearn += charNumber + "learn.txt";
                 try {
-                    extractBytes(inPath, outPath);
+                    if(j%2==0)
+                        extractBytes(inPath, outPathLearn);
+                    else
+                        extractBytes(inPath, outPathTest);
                 } catch (IOException ex) {
                     Logger.getLogger(ImageManipulation.class.getName()).log(Level.SEVERE, null, ex);
                 }

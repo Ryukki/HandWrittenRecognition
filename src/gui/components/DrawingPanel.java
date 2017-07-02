@@ -97,19 +97,6 @@ public class DrawingPanel extends CustomPanel implements MouseMotionListener, Mo
                 pixels.add(0);
             }
         }
-        int counter = 0;
-        for (Integer p : pixels) {
-            if (p == 1) {
-                System.out.print(p + " ");
-            } else {
-                System.out.print(" ");
-            }
-            ++counter;
-            if (counter == count) {
-                System.out.print("\n");
-                counter = 0;
-            }
-        }
 
         return pixels;
     }

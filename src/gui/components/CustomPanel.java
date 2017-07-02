@@ -77,16 +77,12 @@ public class CustomPanel extends JPanel {
 
             if (s.isActive()) {
                 pixels.add(1);
-                 System.out.print("1 ");
             } else {
                 pixels.add(0);
-                System.out.print("0 ");
             }
             ++count;
             if (count == 20) {
                 count = 0;
-                System.out.print("\n");
-
             }
 
         }
