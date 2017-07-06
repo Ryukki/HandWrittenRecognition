@@ -8,7 +8,18 @@ import neural.TrainingSet;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MainGui extends JFrame {
 
@@ -23,8 +34,8 @@ public class MainGui extends JFrame {
     private JButton trainButton;
     private JButton transformButton;
     private JButton helpButton;
+    private JButton testButton;
     private JButton trainNetworkButton;
-    private JTextField trainingSetsAmount;
     private JComboBox<String> trainAsCombo;
     private JTextField outputTextField;
 
@@ -53,7 +64,7 @@ public class MainGui extends JFrame {
     private void setMainPanel() {
         mainPanel = new JPanel();
         mainPanel.setBackground(Color.LIGHT_GRAY);
-        mainPanel.setLayout(new GridLayout(1,3));
+        mainPanel.setLayout(new GridLayout(1, 3));
         setContentPane(mainPanel);
     }
 
@@ -61,7 +72,7 @@ public class MainGui extends JFrame {
         JPanel panel = new JPanel();
         panel.setBackground(Color.LIGHT_GRAY);
         panel.setPreferredSize(new Dimension(800, 440));
-        
+
         drawingPanel = new DrawingPanel(600, 450, RESOLUTION);
         panel.add(drawingPanel);
 
@@ -71,18 +82,17 @@ public class MainGui extends JFrame {
     private void setCenterArea() {
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new GridBagLayout());
-       // centerPanel.setPreferredSize(new Dimension(100, 400));
+        // centerPanel.setPreferredSize(new Dimension(100, 400));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.anchor = GridBagConstraints.CENTER;
-       
-        trainNetworkButton = new JButton("Train X times:");
-        trainingSetsAmount = new JFormattedTextField("5000");
-        trainingSetsAmount.setMaximumSize(new Dimension(100, 30));
-        trainingSetsAmount.setPreferredSize(new Dimension(100, 30));
-      //  centerPanel.setSize(new Dimension(100,40));
+
+        trainNetworkButton = new JButton("Train network");
+        //  centerPanel.setSize(new Dimension(100,40));
         centerPanel.add(trainNetworkButton, gbc);
-        //centerPanel.add(trainingSetsAmount, gbc);
+
+        testButton = new JButton("Test");
+        centerPanel.add(testButton, gbc);
 
         centerPanel.add(Box.createVerticalStrut(50));
 
@@ -110,14 +120,34 @@ public class MainGui extends JFrame {
 
         trainButton = new JButton("Train");
         centerPanel.add(trainButton, gbc);
-        
-        
+
         centerPanel.add(Box.createVerticalStrut(50));
         outputTextField = new JTextField();
         outputTextField.setPreferredSize(new Dimension(200, 20));
         centerPanel.add(outputTextField);
 
         mainPanel.add(centerPanel);
+    }
+
+    private ArrayList<ArrayList<Integer>> readFile(String filename) throws FileNotFoundException, IOException {
+        ArrayList<ArrayList<Integer>> inputs = new ArrayList();
+
+        try (InputStream in = new FileInputStream(new File(filename));
+                Reader reader = new InputStreamReader(in, Charset.defaultCharset());
+                Reader buffer = new BufferedReader(reader)) {
+            for (int j = 0; j < 25; j++) {
+                int r = 0;
+                ArrayList<Integer> pixels = new ArrayList<>();
+                for (int i = 0; i < 900; i++) {
+                    if ((r = reader.read()) != -1) {
+                        r -= 48;
+                        pixels.add(r);
+                    }
+                }
+                inputs.add(pixels);
+            }
+        }
+        return inputs;
     }
 
     private void setOnClicks() {
@@ -129,7 +159,49 @@ public class MainGui extends JFrame {
             ReadWriteFile.saveToFile(drawingPanel.getPixels(), letter);
         });
 
-        transformButton.addActionListener(e -> {
+        testButton.addActionListener(e -> {
+            double result;
+            do {
+                double amountOfTries = 0, amountOfSucceses = 0;
+
+                for (int j = 0; j < 26; j++) {
+                    char letterValue = (char) (j + 65);
+                    String path = "src\\resources\\" + letterValue + "test.txt";
+                    for (int k = 0; k < 25; k++) {
+                        try {
+                            networkTrainer.setInputs(readFile(path).get(k));
+                            ArrayList<Double> outputs = networkTrainer.getOutputs();
+                            int index = 0;
+                            for (int i = 0; i < outputs.size(); i++) {
+                                if (outputs.get(i) > outputs.get(index)) {
+                                    index = i;
+                                }
+                            }
+                            amountOfTries++;
+                            if (index == j) {
+                                amountOfSucceses++;
+                            }
+                        } catch (IOException ex) {
+                            Logger.getLogger(MainGui.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
+                result = amountOfSucceses / amountOfTries;
+                if(result <0.7)
+                   networkTrainer.train();
+                else
+                    break;
+            } while (result < 0.7);
+            JFrame tempFrame = new JFrame();
+            JTextField tempTextField = new JTextField("Network has " + result + " success ratio.");
+            tempFrame.add(tempTextField);
+            tempFrame.pack();
+            tempFrame.setVisible(true);
+        }
+        );
+
+        transformButton.addActionListener(e
+                -> {
             networkTrainer.setInputs(drawingPanel.getPixels());
 
             ArrayList<Double> outputs = networkTrainer.getOutputs();
@@ -141,12 +213,13 @@ public class MainGui extends JFrame {
             }
 
             //updateTextArea();
-
             trainAsCombo.setSelectedIndex(index);
             outputTextField.setText("Written letter is: " + trainAsCombo.getItemAt(index));
-        });
+        }
+        );
 
-        helpButton.addActionListener(e -> {
+        helpButton.addActionListener(e
+                -> {
             drawingPanel.getPixels();
             StringBuilder sb = new StringBuilder();
             sb.append("Train network after you start the program.\n");
@@ -157,11 +230,14 @@ public class MainGui extends JFrame {
             sb.append("\n");
             sb.append("Click \"Train\" to train specific letter\n");
             JOptionPane.showMessageDialog(this, sb.toString(), "Help", JOptionPane.PLAIN_MESSAGE);
-        });
+        }
+        );
 
-        trainNetworkButton.addActionListener(e -> {
+        trainNetworkButton.addActionListener(e
+                -> {
             networkTrainer.train();//number);
-        });
+        }
+        );
     }
 
     private void updateTextArea() {

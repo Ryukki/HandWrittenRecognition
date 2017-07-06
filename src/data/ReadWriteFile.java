@@ -22,7 +22,7 @@ public class ReadWriteFile {
             char letterValue = (char) (i + 65);
             String letter = String.valueOf(letterValue);
             try {
-                for (ArrayList<Integer> list : readFromFile("src\\resources\\" + letter + ".txt")) {
+                for (ArrayList<Integer> list : readFromFile("src\\resources\\" + letter + "learn.txt")) {
                     trainingSets.add(new TrainingSet(list, GoodOutputs.getInstance().getGoodOutput(letter)));
                 }
             } catch (IOException ex) {
@@ -42,13 +42,13 @@ public class ReadWriteFile {
                 int r = 0;
                 do{
                 ArrayList<Integer> input = new ArrayList<>();
-                for(int i = 0; i < 30000; i++){
+                for(int i = 0; i < 900; i++){
                     if ((r = reader.read()) != -1) {
                         r-=48;
                         input.add(r);
                     }
                 }   
-                if(input.size()==30000)
+                if(input.size()==900)
                     inputs.add(input);
                 }while(r!=-1);
         }
@@ -57,7 +57,7 @@ public class ReadWriteFile {
 
     public static void saveToFile(ArrayList<Integer> input, String filename) {
         try {
-            String path = "src\\resources\\" + filename + ".txt";
+            String path = "src\\resources\\" + filename + "learn.txt";
             File file = new File(path);
             PrintWriter pw = new PrintWriter(new FileOutputStream(file, true));
             for (Integer i : input) {

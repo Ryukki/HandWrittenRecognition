@@ -24,8 +24,8 @@ public class ImageToFile {
     
     public static void main(String[] args) {
         for (int i=0; i<26;i++){
-            for(int j=0;j<55;j++){
-            String inPath = "E:\\Desktop\\CharDB\\";
+            for(int j=0;j<50;j++){
+            String inPath = "E:\\Desktop\\CharDB\\aaaaa\\";
             String outPathLearn = "E:\\Desktop\\CharDB\\res\\";
             String outPathTest = "E:\\Desktop\\CharDB\\res\\";
             Integer file = 1+j;
