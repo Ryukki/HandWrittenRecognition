@@ -171,7 +171,10 @@ public class MainGui extends JFrame {
     }
 
     private void setOnClicks() {
-        clearButton.addActionListener(e -> drawingPanel.clear());
+        clearButton.addActionListener(e -> {
+            drawingPanel.clear();
+            outputTextField.setText("");
+                    });
 
         trainButton.addActionListener(e -> {
             String letter = (String) trainAsCombo.getSelectedItem();
