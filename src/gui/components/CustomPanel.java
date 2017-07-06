@@ -30,7 +30,7 @@ public class CustomPanel extends JPanel {
 
         for (int i = 0; i < width/3; i++) {
             for (int j = 0; j < height/3; j++) {
-                sections.add(new Section(i * (width / 200), j * (height / 150), width / 200, height / 150));
+                sections.add(new Section(i * (width / 30), j * (height / 30), width / 30, height / 30));
                 
             }
         }

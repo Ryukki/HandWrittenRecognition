@@ -39,6 +39,7 @@ public class Neuron {
         double sum = 0;
 
         for (int i = 0; i < inputs.size(); i++) {
+           
             sum += inputs.get(i) * weights.get(i);
         }
         sum += BIAS * biasWeight;

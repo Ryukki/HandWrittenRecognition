@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 
 public class MainGui extends JFrame {
 
-    private final int RESOLUTION = 150;
+    private final int RESOLUTION = 30;
 
     private Train networkTrainer;
 
@@ -56,7 +56,7 @@ public class MainGui extends JFrame {
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
-        setSize(new Dimension(1000, 500));
+        setSize(new Dimension(900, 500));
         setLocationRelativeTo(null);
         setResizable(false);
     }
@@ -73,7 +73,7 @@ public class MainGui extends JFrame {
         panel.setBackground(Color.LIGHT_GRAY);
         panel.setPreferredSize(new Dimension(800, 440));
 
-        drawingPanel = new DrawingPanel(600, 450, RESOLUTION);
+        drawingPanel = new DrawingPanel(450, 450, RESOLUTION);
         panel.add(drawingPanel);
 
         mainPanel.add(panel);
