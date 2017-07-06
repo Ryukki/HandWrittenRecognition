@@ -18,7 +18,7 @@ public class Train {
     }
 
     public void train(){//long count) {
-        for (long i = 0; i < 10000; i++) {
+        for (long i = 0; i < 2500; i++) {
             int index = ((int) (Math.random() * trainingSets.size()));
             TrainingSet set = trainingSets.get(index);
             network.setInputs(set.getInputs());

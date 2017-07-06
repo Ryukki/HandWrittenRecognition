@@ -28,8 +28,8 @@ public class CustomPanel extends JPanel {
 
     private void generateSections() {
 
-        for (int i = 0; i < width/3; i++) {
-            for (int j = 0; j < height/3; j++) {
+        for (int i = 0; i < width/15; i++) {
+            for (int j = 0; j < height/15; j++) {
                 sections.add(new Section(i * (width / 30), j * (height / 30), width / 30, height / 30));
                 
             }

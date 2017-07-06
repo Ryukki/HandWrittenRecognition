@@ -26,8 +26,8 @@ public class ImageToFile {
         for (int i=0; i<26;i++){
             for(int j=0;j<50;j++){
             String inPath = "E:\\Desktop\\CharDB\\aaaaa\\";
-            String outPathLearn = "E:\\Desktop\\CharDB\\res\\";
-            String outPathTest = "E:\\Desktop\\CharDB\\res\\";
+            String outPathLearn = "E:\\Desktop\\CharDB\\resources\\";
+            String outPathTest = "E:\\Desktop\\CharDB\\resources\\";
             Integer file = 1+j;
             char charNumber = (char)(65 + i);
             inPath += charNumber +"\\"+ charNumber + file + ".png";
@@ -35,7 +35,7 @@ public class ImageToFile {
             outPathTest += charNumber + "test.txt";
             outPathLearn += charNumber + "learn.txt";
                 try {
-                    if(j%2==0)
+                    if(j<40)
                         extractBytes(inPath, outPathLearn);
                     else
                         extractBytes(inPath, outPathTest);

@@ -35,22 +35,24 @@ public class ReadWriteFile {
 
     private static ArrayList<ArrayList<Integer>> readFromFile(String filename) throws FileNotFoundException, IOException {
         ArrayList<ArrayList<Integer>> inputs = new ArrayList<>();
-        
+
         try (InputStream in = new FileInputStream(new File(filename));
-            Reader reader = new InputStreamReader(in, Charset.defaultCharset());
-            Reader buffer = new BufferedReader(reader)) {
-                int r = 0;
-                do{
+                Reader reader = new InputStreamReader(in, Charset.defaultCharset());
+                Reader buffer = new BufferedReader(reader)) {
+            int r = 0, count = 0;
+            do {
                 ArrayList<Integer> input = new ArrayList<>();
-                for(int i = 0; i < 900; i++){
+                for (int i = 0; i < 900; i++) {
                     if ((r = reader.read()) != -1) {
-                        r-=48;
+                        r -= 48;
                         input.add(r);
                     }
-                }   
-                if(input.size()==900)
+                }
+                if (input.size() == 900) {
                     inputs.add(input);
-                }while(r!=-1);
+                    count++;
+                }
+            } while (r != -1);// && count < 10);
         }
         return inputs;
     }

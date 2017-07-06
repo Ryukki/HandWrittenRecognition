@@ -38,6 +38,9 @@ public class MainGui extends JFrame {
     private JButton trainNetworkButton;
     private JComboBox<String> trainAsCombo;
     private JTextField outputTextField;
+    private ArrayList<ArrayList<Integer>> testingSets;
+    private JFrame tempFrame;
+    private JTextField tempTextField;
 
     public static void main(String[] args) {
         new MainGui();
@@ -59,6 +62,13 @@ public class MainGui extends JFrame {
         setSize(new Dimension(900, 500));
         setLocationRelativeTo(null);
         setResizable(false);
+        testingSets = new ArrayList();
+        loadTestingSets();
+                    /*tempFrame = new JFrame();
+            tempTextField = new JTextField("kkk");
+            tempFrame.add(tempTextField);
+            tempFrame.pack();
+            tempFrame.setVisible(true);*/
     }
 
     private void setMainPanel() {
@@ -129,13 +139,12 @@ public class MainGui extends JFrame {
         mainPanel.add(centerPanel);
     }
 
-    private ArrayList<ArrayList<Integer>> readFile(String filename) throws FileNotFoundException, IOException {
-        ArrayList<ArrayList<Integer>> inputs = new ArrayList();
+    private void readFile(String filename) throws FileNotFoundException, IOException {
 
         try (InputStream in = new FileInputStream(new File(filename));
                 Reader reader = new InputStreamReader(in, Charset.defaultCharset());
                 Reader buffer = new BufferedReader(reader)) {
-            for (int j = 0; j < 25; j++) {
+            for (int j = 0; j < 10; j++) {
                 int r = 0;
                 ArrayList<Integer> pixels = new ArrayList<>();
                 for (int i = 0; i < 900; i++) {
@@ -144,10 +153,21 @@ public class MainGui extends JFrame {
                         pixels.add(r);
                     }
                 }
-                inputs.add(pixels);
+                testingSets.add(pixels);
             }
         }
-        return inputs;
+    }
+
+    private void loadTestingSets() {
+        for (int j = 0; j < 26; j++) {
+            char letterValue = (char) (j + 65);
+            String path = "src\\resources\\" + letterValue + "test.txt";
+            try {
+                readFile(path);
+            } catch (IOException ex) {
+                Logger.getLogger(MainGui.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     private void setOnClicks() {
@@ -160,45 +180,46 @@ public class MainGui extends JFrame {
         });
 
         testButton.addActionListener(e -> {
-            double result;
+            double result = 0.0, amountOfTries = 0.0, amountOfSucceses = 0.0;
+            /*JFrame tempFrame = new JFrame();
+            JTextField tempTextField = new JTextField("Network has " + result + " success ratio.\t"
+                    + "Best score so far was: "+ amountOfSucceses + " out of " + amountOfTries);
+            tempFrame.add(tempTextField);
+            tempFrame.pack();
+            tempFrame.setVisible(true);*/
             do {
-                double amountOfTries = 0, amountOfSucceses = 0;
-
+                amountOfTries = 0;
+                amountOfSucceses = 0;
                 for (int j = 0; j < 26; j++) {
-                    char letterValue = (char) (j + 65);
-                    String path = "src\\resources\\" + letterValue + "test.txt";
-                    for (int k = 0; k < 25; k++) {
-                        try {
-                            networkTrainer.setInputs(readFile(path).get(k));
-                            ArrayList<Double> outputs = networkTrainer.getOutputs();
-                            int index = 0;
-                            for (int i = 0; i < outputs.size(); i++) {
-                                if (outputs.get(i) > outputs.get(index)) {
-                                    index = i;
-                                }
+                    for (int k = 0; k < 10; k++) {
+                        int ind = j * 10 + k;
+                        networkTrainer.setInputs(testingSets.get(ind));
+                        ArrayList<Double> outputs = networkTrainer.getOutputs();
+                        int index = 0;
+                        for (int i = 0; i < outputs.size(); i++) {
+                            if (outputs.get(i) > outputs.get(index)) {
+                                index = i;
                             }
-                            amountOfTries++;
-                            if (index == j) {
-                                amountOfSucceses++;
-                            }
-                        } catch (IOException ex) {
-                            Logger.getLogger(MainGui.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        amountOfTries++;
+                        if (index == j) {
+                            amountOfSucceses++;
                         }
                     }
                 }
+                double tempres = result;
                 result = amountOfSucceses / amountOfTries;
-                if(result <0.7)
-                   networkTrainer.train();
-                else
+                if (result > tempres){
+                    System.out.println("Network has " + result + " success ratio.\n"
+                    + "Best score so far was: "+ amountOfSucceses + " out of " + amountOfTries);
+                }
+                if (result < 0.7) {
+                    networkTrainer.train();
+                } else {
                     break;
+                }
             } while (result < 0.7);
-            JFrame tempFrame = new JFrame();
-            JTextField tempTextField = new JTextField("Network has " + result + " success ratio.");
-            tempFrame.add(tempTextField);
-            tempFrame.pack();
-            tempFrame.setVisible(true);
-        }
-        );
+        });
 
         transformButton.addActionListener(e
                 -> {
